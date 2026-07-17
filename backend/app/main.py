@@ -22,6 +22,8 @@ class AskResponse(BaseModel):
     from_cache: bool
     guardrail_triggered: str | None
 
+# UPDATED: Added @app.get("/") so Render's port scanner gets a 200 OK
+@app.get("/")
 @app.get("/health")
 def health_check():
     return {"status": "ok", "service": "mca-compliance-ai-backend"}
