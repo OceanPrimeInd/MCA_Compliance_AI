@@ -1,7 +1,12 @@
+import os
 import re
-import requests
+from pathlib import Path
+from dotenv import load_dotenv
+from groq import Groq
 from core.rag.retrieve import Retriever
 from core.rag import cache
+
+load_dotenv(dotenv_path=Path(__file__).resolve().parents[2] / ".env", override=True)
 
 SYSTEM_PROMPT = """You are a compliance assistant for the UK MCA Sport or Pleasure Vessel Code (SPVC), 2025 edition.
 
@@ -19,9 +24,9 @@ CACHE_SIMILARITY_THRESHOLD = 0.92
 CLAUSE_CITATION_PATTERN = re.compile(r'Clause\s+([0-9]+[A-Z]?(?:\.[0-9]+)*)', re.IGNORECASE)
 
 class Answerer:
-    def __init__(self, index_path: str, model: str = "llama3.1:8b"):
+    def __init__(self, index_path: str, model: str = "llama-3.3-70b-versatile"):
         self.retriever = Retriever(index_path)
-        self.ollama_url = "http://localhost:11434/api/generate"
+        self.client = Groq(api_key=os.getenv("GROQ_API_KEY"))
         self.model = model
 
     def _verify_citations(self, answer_text: str, sources: list) -> bool:
@@ -65,23 +70,15 @@ class Answerer:
             for r in results
         ])
 
-        prompt = f"""{SYSTEM_PROMPT}
-
-Retrieved clauses:
-
-{context}
-
-Question: {question}
-
-Answer:"""
-
-        response = requests.post(self.ollama_url, json={
-            "model": self.model,
-            "prompt": prompt,
-            "stream": False,
-        })
-        response.raise_for_status()
-        answer_text = response.json()["response"]
+        response = self.client.chat.completions.create(
+            model=self.model,
+            max_tokens=1000,
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": f"Retrieved clauses:\n\n{context}\n\nQuestion: {question}"},
+            ],
+        )
+        answer_text = response.choices[0].message.content
 
         verified = self._verify_citations(answer_text, sources)
         cache.store(question, query_embedding, answer_text, sources, verified=verified)
