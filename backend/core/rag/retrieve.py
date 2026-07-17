@@ -8,17 +8,23 @@ class Retriever:
         data = np.load(index_path, allow_pickle=True)
         self.embeddings = data["embeddings"]
         self.chunks = json.loads(str(data["chunks"]))
-        # REMOVED provider="hf-inference"
+        
+        # Initialized without the strict provider tag to use normal serverless routing
         self.client = InferenceClient(api_key=os.environ["HF_TOKEN"])
 
     def _embed_query(self, text: str) -> np.ndarray:
-        # CHANGED to a reliably supported serverless embedding model
-        result = self.client.feature_extraction(text, model="BAAI/bge-small-en-v1.5")
+        # Bypasses the broken feature_extraction route using the standard embeddings API
+        result = self.client.embeddings(text, model="sentence-transformers/all-MiniLM-L6-v2")
         return np.array(result).flatten()
 
     def search(self, query: str, top_k: int = 5):
         query_embedding = self._embed_query(query)
         norms = np.linalg.norm(self.embeddings, axis=1) * np.linalg.norm(query_embedding)
+        
+        # Guard against zero-division errors
+        if np.isclose(norms, 0).any():
+            return []
+            
         similarities = (self.embeddings @ query_embedding) / norms
 
         pool_size = min(top_k * 4, len(similarities))
