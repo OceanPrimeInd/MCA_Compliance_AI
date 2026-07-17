@@ -3,8 +3,8 @@ uvicorn[standard]==0.32.0
 pydantic==2.9.2
 unstructured[pdf]==0.16.19
 qdrant-client==1.12.0
-sentence-transformers==3.2.0
 groq==0.11.0
+huggingface_hub==0.26.0
 python-dotenv==1.0.1
 pytest==8.3.3
 

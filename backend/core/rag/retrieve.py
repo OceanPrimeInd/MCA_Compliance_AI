@@ -1,16 +1,21 @@
 import json
+import os
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from huggingface_hub import InferenceClient
 
 class Retriever:
     def __init__(self, index_path: str):
         data = np.load(index_path, allow_pickle=True)
         self.embeddings = data["embeddings"]
         self.chunks = json.loads(str(data["chunks"]))
-        self.model = SentenceTransformer("all-MiniLM-L6-v2")
+        self.client = InferenceClient(api_key=os.getenv("HF_TOKEN"))
+
+    def _embed_query(self, text: str) -> np.ndarray:
+        result = self.client.feature_extraction(text, model="sentence-transformers/all-MiniLM-L6-v2")
+        return np.array(result).flatten()
 
     def search(self, query: str, top_k: int = 5):
-        query_embedding = self.model.encode([query])[0]
+        query_embedding = self._embed_query(query)
         norms = np.linalg.norm(self.embeddings, axis=1) * np.linalg.norm(query_embedding)
         similarities = (self.embeddings @ query_embedding) / norms
 

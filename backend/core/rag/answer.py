@@ -35,7 +35,7 @@ class Answerer:
         return cited.issubset(retrieved) if cited else True
 
     def ask(self, question: str, top_k: int = 5):
-        query_embedding = self.retriever.model.encode([question])[0]
+        query_embedding = self.retriever._embed_query(question)
 
         cached = cache.find_similar(query_embedding, threshold=CACHE_SIMILARITY_THRESHOLD)
         if cached:
