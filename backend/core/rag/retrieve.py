@@ -8,7 +8,7 @@ class Retriever:
         data = np.load(index_path, allow_pickle=True)
         self.embeddings = data["embeddings"]
         self.chunks = json.loads(str(data["chunks"]))
-        self.client = InferenceClient(api_key=os.getenv("HF_TOKEN"))
+        self.client = InferenceClient(provider="hf-inference",api_key=os.environ["HF_TOKEN"])
 
     def _embed_query(self, text: str) -> np.ndarray:
         result = self.client.feature_extraction(text, model="sentence-transformers/all-MiniLM-L6-v2")
