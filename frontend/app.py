@@ -3,6 +3,10 @@ import requests
 import time
 import uuid
 import storage
+import os
+
+# Uses Render URL in production, falls back to localhost if running locally
+BACKEND_URL = os.environ.get("BACKEND_API_URL", "http://localhost:8000")
 
 st.set_page_config(page_title="MCA Compliance AI", page_icon="⚓", layout="wide")
 
@@ -173,7 +177,7 @@ if question:
             start = time.perf_counter()
             try:
                 response = requests.post(
-                    "http://localhost:8000/ask",
+                    f"{BACKEND_URL}/ask",  # 👈 Dynamic routing string
                     json={"question": question},
                     timeout=120,
                 )
