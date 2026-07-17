@@ -8,10 +8,12 @@ class Retriever:
         data = np.load(index_path, allow_pickle=True)
         self.embeddings = data["embeddings"]
         self.chunks = json.loads(str(data["chunks"]))
-        self.client = InferenceClient(provider="hf-inference",api_key=os.environ["HF_TOKEN"])
+        # REMOVED provider="hf-inference"
+        self.client = InferenceClient(api_key=os.environ["HF_TOKEN"])
 
     def _embed_query(self, text: str) -> np.ndarray:
-        result = self.client.feature_extraction(text, model="sentence-transformers/all-MiniLM-L6-v2")
+        # CHANGED to a reliably supported serverless embedding model
+        result = self.client.feature_extraction(text, model="BAAI/bge-small-en-v1.5")
         return np.array(result).flatten()
 
     def search(self, query: str, top_k: int = 5):
