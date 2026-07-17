@@ -8,20 +8,25 @@ class Retriever:
         data = np.load(index_path, allow_pickle=True)
         self.embeddings = data["embeddings"]
         self.chunks = json.loads(str(data["chunks"]))
-        
-        # Initialized without the strict provider tag to use normal serverless routing
         self.client = InferenceClient(api_key=os.environ["HF_TOKEN"])
 
     def _embed_query(self, text: str) -> np.ndarray:
-        # Bypasses the broken feature_extraction route using the standard embeddings API
-        result = self.client.embeddings(text, model="sentence-transformers/all-MiniLM-L6-v2")
-        return np.array(result).flatten()
+        # Uses the generic post method to directly hit the model feature extraction API
+        # This completely bypasses version restrictions and router provider overrides
+        response = self.client.post(
+            json={"inputs": [text]},
+            model="sentence-transformers/all-MiniLM-L6-v2"
+        )
+        # Parse the JSON byte array returned by the API
+        result = json.loads(response.decode("utf-8"))
+        
+        # Hugging Face returns a nested list [[0.1, 0.2, ...]] for batching
+        return np.array(result[0]).flatten()
 
     def search(self, query: str, top_k: int = 5):
         query_embedding = self._embed_query(query)
         norms = np.linalg.norm(self.embeddings, axis=1) * np.linalg.norm(query_embedding)
         
-        # Guard against zero-division errors
         if np.isclose(norms, 0).any():
             return []
             
