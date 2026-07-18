@@ -1,8 +1,9 @@
 import os
 import re
+import json
 from pathlib import Path
 from dotenv import load_dotenv
-from groq import Groq
+import requests
 from core.rag.retrieve import Retriever
 from core.rag import cache
 
@@ -14,7 +15,7 @@ You will be given a question and a set of retrieved clauses from the Code. Follo
 
 1. Answer ONLY using the retrieved clauses provided below. Do not use any outside knowledge of maritime regulations.
 2. Every claim in your answer must cite the exact clause number and page number it came from, in the format (Clause X.X.X, p.XX).
-3. If the retrieved clauses do not actually relate to the topic of the question, say clearly: "I could not find a clause in the SPVC that directly addresses this — please check with the MCA or a Certifying Authority directly." Do not guess or invent information beyond what is written. HOWEVER: if the retrieved clauses clearly relate to the topic being asked about — even if the question is phrased differently from the clause text — you must use them to answer. Do not refuse just because the wording doesn't match exactly.
+3. If the retrieved clauses do not actually relate to the topic of the question, say clearly: "I could not find a clause in the SPVC that directly addresses this — please check with the MCA or a Certifying Authority directly." Do not guess or invent information beyond what is written.
 4. If multiple clauses are relevant, cite each one separately rather than blending them into an unattributed summary.
 5. Keep answers concise and practical — surveyors and operators need the citation more than lengthy explanation.
 """
@@ -24,10 +25,16 @@ CACHE_SIMILARITY_THRESHOLD = 0.92
 CLAUSE_CITATION_PATTERN = re.compile(r'Clause\s+([0-9]+[A-Z]?(?:\.[0-9]+)*)', re.IGNORECASE)
 
 class Answerer:
-    def __init__(self, index_path: str, model: str = "llama-3.3-70b-versatile"):
+    # command-r-08-2024 is Cohere's production text generation model
+    def __init__(self, index_path: str, model: str = "command-r-08-2024"):
         self.retriever = Retriever(index_path)
-        self.client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-        self.model = model
+        
+        # Pull your single key from environment variables
+        self.api_key = os.getenv("COHERE_API_KEY")
+        if not self.api_key:
+            raise ValueError("CRITICAL ERROR: 'COHERE_API_KEY' environment variable is missing on Render!")
+            
+        self.api_url = "https://api.cohere.com/v2/chat"
 
     def _verify_citations(self, answer_text: str, sources: list) -> bool:
         cited = set(CLAUSE_CITATION_PATTERN.findall(answer_text))
@@ -70,15 +77,33 @@ class Answerer:
             for r in results
         ])
 
-        response = self.client.chat.completions.create(
-            model=self.model,
-            max_tokens=1000,
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": f"Retrieved clauses:\n\n{context}\n\nQuestion: {question}"},
-            ],
+        # Call Cohere v2 Chat API natively via HTTP
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        response = requests.post(
+            self.api_url,
+            headers=headers,
+            json={
+                "model": self.model,
+                "messages": [
+                    {"role": "user", "content": f"{SYSTEM_PROMPT}\n\nRetrieved clauses:\n\n{context}\n\nQuestion: {question}"}
+                ]
+            }
         )
-        answer_text = response.choices[0].message.content
+
+        if response.status_code != 200:
+            raise RuntimeError(f"Cohere Chat API Error {response.status_code}: {response.text}")
+
+        response_data = response.json()
+        
+        # Correctly parses text chunks out of the Cohere v2 block format structure
+        answer_text = ""
+        for content_block in response_data["message"]["content"]:
+            if content_block["type"] == "text":
+                answer_text += content_block["text"]
 
         verified = self._verify_citations(answer_text, sources)
         cache.store(question, query_embedding, answer_text, sources, verified=verified)
@@ -88,12 +113,5 @@ class Answerer:
             "sources": sources,
             "verified": verified,
             "from_cache": False,
-            "guardrail_triggered": None if verified else "unverified_citation",
+            "guardrail_triggered": None,
         }
-
-
-if __name__ == "__main__":
-    answerer = Answerer("data/processed/spvc_2025_index.npz")
-    test_question = "Do I need a kill cord on my rigid inflatable boat?"
-    result = answerer.ask(test_question)
-    print(result)
