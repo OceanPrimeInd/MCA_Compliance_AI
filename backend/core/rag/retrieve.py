@@ -1,21 +1,38 @@
 import json
 import os
 import numpy as np
-from huggingface_hub import InferenceClient
+import requests
 
 class Retriever:
     def __init__(self, index_path: str):
         data = np.load(index_path, allow_pickle=True)
         self.embeddings = data["embeddings"]
         self.chunks = json.loads(str(data["chunks"]))
-        # Clean initialization without strict provider constraints
-        self.client = InferenceClient(api_key=os.environ["HF_TOKEN"])
+        
+        # Target the modern Cohere v2 endpoint
+        self.api_url = "https://api.cohere.com/v2/embed"
+        self.headers = {
+            "Authorization": f"Bearer {os.environ['COHERE_API_KEY']}",
+            "Content-Type": "application/json"
+        }
 
     def _embed_query(self, text: str) -> np.ndarray:
-        # BAAI/bge-small-en-v1.5 matches all-MiniLM-L6-v2 with exactly 384 dimensions.
-        # This native feature_extraction wrapper completely bypasses the task type bug.
-        result = self.client.feature_extraction(text, model="BAAI/bge-small-en-v1.5")
-        return np.array(result).flatten()
+        response = requests.post(
+            self.api_url, 
+            headers=self.headers, 
+            json={
+                "model": "embed-english-v3.0",
+                "texts": [text],
+                "input_type": "search_query",
+                "embedding_types": ["float"]
+            }
+        )
+        
+        if response.status_code != 200:
+            raise RuntimeError(f"Cohere API Error {response.status_code}: {response.text}")
+            
+        result = response.json()
+        return np.array(result["embeddings"]["float"]).flatten()
 
     def search(self, query: str, top_k: int = 5):
         query_embedding = self._embed_query(query)
