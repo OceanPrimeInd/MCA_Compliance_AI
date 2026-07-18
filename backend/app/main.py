@@ -1,8 +1,19 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from core.rag.answer import Answerer
 
 app = FastAPI(title="MCA Compliance AI")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://www.oceangrc.com",
+    ],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 answerer = Answerer("data/processed/spvc_2025_index.npz")
 

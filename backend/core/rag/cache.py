@@ -28,22 +28,20 @@ def find_similar(embedding: np.ndarray, threshold: float = 0.92):
         "SELECT id, question, embedding, answer, sources, verified, created_at FROM cache"
     ).fetchall()
     conn.close()
-
     if not rows:
         return None
-
     best = None
     best_score = -1
     query_norm = np.linalg.norm(embedding)
-
     for row in rows:
         cached_embedding = np.frombuffer(row[2], dtype=np.float32)
+        if cached_embedding.shape[0] != embedding.shape[0]:
+            continue  # skip entries cached under a different embedding model
         score = float(np.dot(embedding, cached_embedding) / (query_norm * np.linalg.norm(cached_embedding)))
         if score > best_score:
             best_score = score
             best = row
-
-    if best_score >= threshold:
+    if best is not None and best_score >= threshold:
         return {
             "question": best[1],
             "answer": best[3],
