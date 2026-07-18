@@ -28,12 +28,13 @@ class Answerer:
     # command-r-08-2024 is Cohere's production text generation model
     def __init__(self, index_path: str, model: str = "command-r-08-2024"):
         self.retriever = Retriever(index_path)
-        
+        self.model = model   # <-- add this line
+
         # Pull your single key from environment variables
         self.api_key = os.getenv("COHERE_API_KEY")
         if not self.api_key:
             raise ValueError("CRITICAL ERROR: 'COHERE_API_KEY' environment variable is missing on Render!")
-            
+
         self.api_url = "https://api.cohere.com/v2/chat"
 
     def _verify_citations(self, answer_text: str, sources: list) -> bool:
