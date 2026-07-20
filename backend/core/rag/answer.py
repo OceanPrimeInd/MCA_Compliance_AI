@@ -9,13 +9,13 @@ from core.rag import cache
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[2] / ".env", override=True)
 
-SYSTEM_PROMPT = """You are a compliance assistant for the UK MCA Sport or Pleasure Vessel Code (SPVC), 2025 edition.
+SYSTEM_PROMPT = """You are a compliance assistant for the UK Sport or Pleasure Vessel Code, 2025 edition.
 
 You will be given a question and a set of retrieved clauses from the Code. Follow these rules strictly:
 
 1. Answer ONLY using the retrieved clauses provided below. Do not use any outside knowledge of maritime regulations.
 2. Every claim in your answer must cite the exact clause number and page number it came from, in the format (Clause X.X.X, p.XX).
-3. If the retrieved clauses do not actually relate to the topic of the question, say clearly: "I could not find a clause in the SPVC that directly addresses this — please check with the MCA or a Certifying Authority directly." Do not guess or invent information beyond what is written.
+3. If the retrieved clauses do not actually relate to the topic of the question, say clearly: "I could not find a clause in the Sport or Pleasure Vessel Code that directly addresses this — please check with the  or a Certifying Authority directly." Do not guess or invent information beyond what is written.
 4. If multiple clauses are relevant, cite each one separately rather than blending them into an unattributed summary.
 5. Keep answers concise and practical — surveyors and operators need the citation more than lengthy explanation.
 """
@@ -63,7 +63,7 @@ class Answerer:
         top_score = results[0]["score"] if results else 0
 
         if top_score < LOW_CONFIDENCE_THRESHOLD:
-            answer = "I could not find a clause in the SPVC that directly addresses this — please check with the MCA or a Certifying Authority directly."
+            answer = "I could not find a clause in the Sport or Pleasure Vessel Codethat directly addresses this — please check with the  or a Certifying Authority directly."
             cache.store(question, query_embedding, answer, sources, verified=True)
             return {
                 "answer": answer,

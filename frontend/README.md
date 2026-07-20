@@ -1,6 +1,6 @@
-# MCA Compliance AI — Frontend
+# Compliance AI — Frontend
 
-React + Vite frontend for the MCA Compliance AI backend, deployable to Netlify or Vercel
+React + Vite frontend for the Compliance AI backend, deployable to Netlify or Vercel
 (a Streamlit app can't be — Netlify/Vercel only serve static sites, and Streamlit needs a
 persistent Python server like your Render backend).
 
@@ -13,7 +13,49 @@ cp .env.example .env.local
 npm run dev
 ```
 
-## 2. Required: enable CORS on your FastAPI backend
+## 2. Set up Supabase auth (one-time, in Supabase's dashboard)
+
+You mentioned you already have Supabase access from your boss — use that existing
+project rather than creating a new one, unless you specifically want this isolated.
+
+1. Go to your project → **Authentication → Providers** → confirm **Email** is enabled
+   (it is by default).
+2. Decide whether you want email confirmation required before first login:
+   **Authentication → Settings → Email Auth** → toggle "Confirm email" on/off.
+   Turn it **off** for a fast internal beta (testers can sign up and use it
+   immediately); turn it **on** before a public launch.
+3. Go to **Project Settings → API** and copy:
+   - **Project URL** → this is `VITE_SUPABASE_URL`
+   - **anon public** key → this is `VITE_SUPABASE_ANON_KEY`
+   (Never use the `service_role` key in the frontend — that one bypasses all
+   security rules and must only ever live server-side.)
+4. Put both into `.env.local`:
+   ```
+   VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-public-key
+   ```
+5. **Create the conversations table**: open **SQL Editor** in the Supabase
+   dashboard → **New query** → paste the contents of
+   `supabase/migrations/001_conversations.sql` → **Run**. This creates one table
+   (`conversations`) with Row Level Security enabled, so each user can only ever
+   read or write their own rows — the app's `anon` key can't be used to see
+   anyone else's history even if someone inspected the network requests.
+6. **Run the second migration**: `supabase/migrations/002_add_user_email.sql`,
+   same way. This adds a `user_email` column so you can see who had which
+   conversation directly in **Table Editor → conversations**, without needing
+   to join against the protected `auth.users` table each time. (You can also
+   always see the full account list at **Authentication → Users**.)
+
+Conversation history now lives in Postgres, not `localStorage` — it syncs across
+devices and survives a cleared browser, which matters once real beta testers are
+using this on their own laptops/phones.
+
+**If you use the magic-link option**, also set your deployed URL in
+**Authentication → URL Configuration → Site URL** (and add it to **Redirect URLs**
+too) once you deploy to Netlify/Vercel — otherwise the link in the email will
+redirect back to `localhost` instead of your live site.
+
+## 3. Required: enable CORS on your FastAPI backend
 
 Right now your backend only ever received requests from the same Render network or
 localhost. Once the frontend is on Netlify/Vercel, the browser will block requests
@@ -38,7 +80,7 @@ Add this once, right after `app = FastAPI(...)`. Redeploy the backend before tes
 the deployed frontend, or every request will fail with a CORS error in the browser
 console (not a 500 — it'll look like the request never reached your server).
 
-## 3. Deploy to Netlify
+## 4. Deploy to Netlify
 
 ```bash
 npm install -g netlify-cli   # if you don't have it
@@ -52,7 +94,7 @@ Either way, set the environment variable in **Site settings → Environment vari
 VITE_BACKEND_URL=https://mca-compliance-ai.onrender.com
 ```
 
-## 4. Deploy to Vercel
+## 5. Deploy to Vercel
 
 ```bash
 npm install -g vercel

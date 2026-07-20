@@ -22,7 +22,8 @@ html, body, #root {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 18px;
   color: var(--ink);
   background: var(--surface);
   -webkit-font-smoothing: antialiased;
@@ -31,11 +32,13 @@ body {
 .layout {
   display: flex;
   height: 100vh;
+  align-items: stretch;
+  min-width: 300px;
 }
 
 /* ---------- Sidebar ---------- */
 .sidebar {
-  width: 280px;
+  width: 300px;
   flex-shrink: 0;
   background: var(--panel);
   border-right: 1px solid var(--line);
@@ -74,7 +77,7 @@ body {
 .new-conv:hover { border-color: var(--teal); color: var(--teal); }
 
 .sidebar-heading {
-  font-size: 0.72rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: #8A97A0;
   text-transform: uppercase;
@@ -139,9 +142,9 @@ body {
 }
 
 .main-inner {
-  max-width: 1300px;
+  max-width: min(1440px, 100%);
   margin: 0 auto;
-  padding: 2.4rem 1.5rem 1.5rem;
+  padding: 2.4rem 2rem 1.5rem;
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -150,21 +153,14 @@ body {
 .page-title {
   font-family: 'Fraunces', serif;
   font-weight: 600;
-  font-size: 1.7rem;
+  font-size: 1.85rem;
   margin: 0 0 0.25rem;
 }
 
 .page-sub {
   color: var(--slate);
-  font-size: 0.98rem;
+  font-size: 1.05rem;
   margin: 0 0 1.6rem;
-}
-
-.examples {
-  display: flex;
-  gap: 0.7rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.8rem;
 }
 
 .example-btn {
@@ -207,15 +203,15 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 .msg-bubble {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 0.9rem 1.1rem;
-  max-width: 1200px;
+  padding: 1.2rem 1.2rem;
+  max-width: 1500px;
 }
 .msg-row.user .msg-bubble {
   background: var(--teal);
@@ -250,7 +246,7 @@ body {
   border-radius: 999px;
   padding: 0.25rem 0.7rem;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.05rem;
+  font-size: 0.78rem;
   color: #334155;
 }
 
@@ -295,7 +291,7 @@ body {
   color: #7A4C08;
   border-radius: 8px;
   padding: 0.55rem 0.85rem;
-  font-size: 0.85rem;
+  font-size: 1.05rem;
   margin-top: 0.6rem;
 }
 
@@ -307,7 +303,7 @@ body {
 }
 
 .badge {
-  font-size: 0.72rem;
+  font-size: 1.05rem;
   font-weight: 600;
   padding: 0.15rem 0.55rem;
   border-radius: 999px;
@@ -340,7 +336,7 @@ body {
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 0.85rem 1rem;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-family: 'Inter', sans-serif;
   background: var(--surface);
   box-shadow: 0 4px 16px rgba(15, 27, 34, 0.06);
@@ -364,8 +360,146 @@ body {
   cursor: not-allowed;
 }
 
+/* ---------- Auth ---------- */
+.auth-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: var(--slate);
+  font-size: 1rem;
+}
+
+.auth-screen {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 1px 1px, #EEF3F4 1px, transparent 0) 0 0/26px 26px,
+    var(--surface);
+}
+
+.auth-card {
+  width: min(92vw, 420px);
+  max-width: 420px;
+  padding: 2.4rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: 0 12px 36px rgba(15, 27, 34, 0.08);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.auth-form label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--slate);
+  margin-top: 0.65rem;
+}
+
+.auth-form input {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+}
+.auth-form input:focus {
+  outline: none;
+  border-color: var(--teal);
+}
+
+.auth-form button[type="submit"] {
+  margin-top: 1.2rem;
+  padding: 0.9rem 1rem;
+  border: none;
+  border-radius: 10px;
+  background: var(--teal);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.auth-form button[type="submit"]:disabled {
+  background: #B7C2C7;
+  cursor: not-allowed;
+}
+
+.auth-error {
+  background: var(--red-soft);
+  color: var(--red);
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.82rem;
+  margin-top: 0.4rem;
+}
+
+.auth-info {
+  background: var(--teal-soft);
+  color: var(--teal);
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.82rem;
+  margin-top: 0.4rem;
+}
+
+.auth-switch {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 1.2rem;
+  align-items: flex-start;
+}
+
+.auth-switch button {
+  background: none;
+  border: none;
+  color: var(--teal);
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+/* ---------- Sidebar user footer ---------- */
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.7rem;
+  margin-top: 0.7rem;
+}
+
+.sidebar-user-email {
+  font-size: 1.05rem;
+  color: var(--slate);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar-signout {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+  font-size: 1.05rem;
+  color: var(--slate);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.sidebar-signout:hover { border-color: var(--red); color: var(--red); }
+
 @media (max-width: 720px) {
   .sidebar { display: none; }
-  .main-inner { padding: 1.4rem 1rem 1rem; }
+  .main-inner { padding: 1.4rem 1.4rem 1.4rem; }
   .msg-bubble { max-width: 100%; }
 }

@@ -1,13 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import * as storage from "./lib/storage";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import Login from "./components/Login";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
-
-const EXAMPLES = [
-  "Do I need a kill cord on my rigid inflatable boat?",
-  "How many liferafts do I need for 20 passengers in area category 1?",
-  "Can I operate my vessel single-handed?",
-];
 
 function uuid() {
   return crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
@@ -85,7 +81,8 @@ function ChatMessage({ msg }) {
   );
 }
 
-export default function App() {
+function ChatApp() {
+  const { user, signOut } = useAuth();
   const [conversationId, setConversationId] = useState(uuid());
   const [messages, setMessages] = useState([]);
   const [conversations, setConversations] = useState([]);
@@ -94,9 +91,13 @@ export default function App() {
   const [error, setError] = useState(null);
   const scrollRef = useRef(null);
 
+  async function refreshConversations() {
+    setConversations(await storage.listConversations(user.id));
+  }
+
   useEffect(() => {
-    setConversations(storage.listConversations());
-  }, []);
+    refreshConversations();
+  }, [user.id]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -108,24 +109,24 @@ export default function App() {
     setError(null);
   }
 
-  function openConversation(conv) {
+  async function openConversation(conv) {
     setConversationId(conv.id);
-    setMessages(storage.loadConversation(conv.id));
+    setMessages(await storage.loadConversation(user.id, conv.id));
     setError(null);
   }
 
-  function removeConversation(id, e) {
+  async function removeConversation(id, e) {
     e.stopPropagation();
-    storage.deleteConversation(id);
-    setConversations(storage.listConversations());
+    await storage.deleteConversation(user.id, id);
+    await refreshConversations();
     if (id === conversationId) startNewConversation();
   }
 
-  function persist(finalMessages) {
+  async function persist(finalMessages) {
     if (finalMessages.length === 0) return;
     const title = finalMessages[0].content.slice(0, 45);
-    storage.saveConversation(conversationId, title, finalMessages);
-    setConversations(storage.listConversations());
+    await storage.saveConversation(user.id, user.email, conversationId, title, finalMessages);
+    await refreshConversations();
   }
 
   async function ask(question) {
@@ -162,7 +163,7 @@ export default function App() {
       };
       const finalMessages = [...withUser, assistantMsg];
       setMessages(finalMessages);
-      persist(finalMessages);
+      await persist(finalMessages);
     } catch (e) {
       setError(`Something went wrong: ${e.message}`);
     } finally {
@@ -179,8 +180,8 @@ export default function App() {
     <div className="layout">
       <aside className="sidebar">
         <div className="brand">
-          <div className="brand-title">⚓ MCA Compliance AI</div>
-          <div className="brand-sub">SPVC 2025 — Beta reference tool</div>
+          <div className="brand-title">⚓ Compliance AI</div>
+          <div className="brand-sub">Sport or Pleasure Vessel Code 2025 — Beta reference tool</div>
         </div>
         <button className="new-conv" onClick={startNewConversation}>
           ＋ New conversation
@@ -205,9 +206,11 @@ export default function App() {
           )}
         </div>
 
-        <div className="sidebar-footer">
-          Answers are generated from the Code and are not a substitute for advice from the
-          MCA or a Certifying Authority.
+        <div className="sidebar-user">
+          <span className="sidebar-user-email">{user.email}</span>
+          <button className="sidebar-signout" onClick={signOut}>
+            Sign out
+          </button>
         </div>
       </aside>
 
@@ -217,16 +220,6 @@ export default function App() {
           <p className="page-sub">
             Ask a question in plain English — every answer is cited against the Code.
           </p>
-
-          {messages.length === 0 && (
-            <div className="examples">
-              {EXAMPLES.map((ex) => (
-                <button key={ex} className="example-btn" onClick={() => ask(ex)}>
-                  {ex}
-                </button>
-              ))}
-            </div>
-          )}
 
           <div className="thread">
             {messages.map((m, i) => (
@@ -249,7 +242,7 @@ export default function App() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask a question about the SPVC..."
+              placeholder="Ask a question about the Sport or Pleasure Vessel Code..."
               disabled={loading}
             />
             <button type="submit" disabled={loading || !input.trim()}>
@@ -259,5 +252,23 @@ export default function App() {
         </div>
       </main>
     </div>
+  );
+}
+
+function Gate() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div className="auth-loading">Loading…</div>;
+  }
+
+  return user ? <ChatApp /> : <Login />;
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <Gate />
+    </AuthProvider>
   );
 }

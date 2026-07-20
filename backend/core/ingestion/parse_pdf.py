@@ -4,7 +4,7 @@ from pathlib import Path
 
 def parse_spvc(pdf_path: str, output_path: str):
     """
-    Parses the SPVC PDF into structured elements, preserving
+    Parses the Sport or Pleasure Vessel Code PDF into structured elements, preserving
     section headers, page numbers, and table structure.
     """
     print(f"Parsing {pdf_path}... this can take a few minutes for 281 pages.")
