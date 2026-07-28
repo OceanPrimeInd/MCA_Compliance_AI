@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   const { signIn, signUp } = useAuth();
-  const [mode, setMode] = useState("signin");
+  const [mode, setMode] = useState("signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -36,9 +36,16 @@ export default function Login() {
         <div className="brand-title" style={{ marginBottom: "0.2rem" }}>
           ⚓ Compliance AI
         </div>
-        <div className="brand-sub" style={{ marginBottom: "1.6rem" }}>
-          Sport or Pleasure Vessel 2025 — Beta reference tool
+        <div className="brand-sub" style={{ marginBottom: "0.5rem" }}>
+          {mode === "signup"
+            ? "Start free — ask your first question about the Sport or Pleasure Vessel Code 2025 in under a minute."
+            : "Sport or Pleasure Vessel Code 2025 — Beta reference tool"}
         </div>
+        {mode === "signup" && (
+          <div className="auth-info" style={{ marginBottom: "1.1rem" }}>
+            No credit card required · 20 free questions a month
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="auth-form">
           <label>Email</label>

@@ -2,6 +2,15 @@ import { useState, useEffect, useRef } from "react";
 import * as storage from "./lib/storage";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Login from "./components/Login";
+import { RouterProvider, useRoute } from "./lib/router";
+import Nav from "./marketing/Nav";
+import Footer from "./marketing/Footer";
+import Home from "./marketing/Home";
+import Solution from "./marketing/Solution";
+import Documents from "./marketing/Documents";
+import Pricing from "./marketing/Pricing";
+import FAQ from "./marketing/FAQ";
+import "./marketing/marketing.css";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
@@ -265,10 +274,45 @@ function Gate() {
   return user ? <ChatApp /> : <Login />;
 }
 
+const MARKETING_ROUTES = {
+  "/": Home,
+  "/solution": Solution,
+  "/documents": Documents,
+  "/pricing": Pricing,
+  "/faq": FAQ,
+};
+
+function MarketingSite() {
+  const { path } = useRoute();
+  const Page = MARKETING_ROUTES[path] || Home;
+
+  return (
+    <div className="mkt-page">
+      <Nav />
+      <Page />
+      <Footer />
+    </div>
+  );
+}
+
+function Site() {
+  const { path } = useRoute();
+
+  if (path === "/app") {
+    return (
+      <AuthProvider>
+        <Gate />
+      </AuthProvider>
+    );
+  }
+
+  return <MarketingSite />;
+}
+
 export default function App() {
   return (
-    <AuthProvider>
-      <Gate />
-    </AuthProvider>
+    <RouterProvider>
+      <Site />
+    </RouterProvider>
   );
 }
