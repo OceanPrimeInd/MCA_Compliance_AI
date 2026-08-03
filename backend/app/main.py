@@ -21,7 +21,7 @@ app.add_middleware(
 
 answerer = Answerer("data/processed/spvc_2025_index.npz")
 
-SUPABASE_URL = os.environ["SUPABASE_URL"]
+SUPABASE_URL = os.environ["VITE_SUPABASE_URL"]
 JWKS_URL = f"{SUPABASE_URL}/auth/v1/.well-known/jwks.json"
 jwks_client = PyJWKClient(JWKS_URL)
 
