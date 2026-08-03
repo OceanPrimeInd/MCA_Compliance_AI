@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import * as storage from "./lib/storage";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { supabase } from "./lib/supabase";
 import Login from "./components/Login";
 import { RouterProvider, useRoute } from "./lib/router";
 import Nav from "./marketing/Nav";
@@ -149,14 +150,28 @@ function ChatApp() {
 
     const start = performance.now();
     try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) {
+        throw new Error("Your session has expired — please sign in again.");
+      }
+
       const res = await fetch(`${BACKEND_URL}/ask`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionData.session.access_token}`,
+        },
         body: JSON.stringify({ question }),
       });
+
+      if (res.status === 429) {
+        const body = await res.json();
+        throw new Error(body.detail);
+      }
       if (!res.ok) {
         throw new Error(`${res.status} ${res.statusText}`);
       }
+
       const result = await res.json();
       const elapsed = (performance.now() - start) / 1000;
       const topScore = result.sources?.[0]?.score ?? 0;
