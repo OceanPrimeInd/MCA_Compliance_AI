@@ -5,7 +5,19 @@ __pycache__/
 *.pyc
 *.egg-info/
 .ruff_cache/
+# Working data is ignored by default — parsed intermediates, SQLite databases
+# and raw PDFs have no business in the repository.
 data/
+
+# ...but the runtime artefacts DO ship, because Render deploys from git and the
+# app cannot answer without them. Missing files here fail quietly rather than
+# loudly: an absent index marks a corpus "unavailable", and an absent
+# applicability sidecar disables filtering entirely while the app keeps serving
+# plausible answers. That is exactly how production ran SPVC-only with no
+# context layer while localhost looked correct.
+!backend/data/processed/*_index.npz
+!backend/data/processed/*_applicability.json
+!backend/data/processed/*_chunks.json
 node_modules/
 .next/
 dist/

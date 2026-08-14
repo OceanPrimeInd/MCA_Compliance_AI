@@ -71,12 +71,22 @@ class CorpusRegistry:
                 print(f"[corpus] {spec.short_name}: unavailable ({index_path.name} missing)")
                 continue
 
-            self.retrievers[spec.code_id] = Retriever(str(index_path))
+            retriever = Retriever(str(index_path))
+            self.retrievers[spec.code_id] = retriever
             self.fingerprints[spec.code_id] = self._fingerprint(index_path)
-            print(
-                f"[corpus] {spec.short_name}: loaded "
-                f"(fingerprint {self.fingerprints[spec.code_id]})"
-            )
+
+            if retriever.applicability is None:
+                print(
+                    f"[corpus] *** {spec.short_name}: loaded WITHOUT applicability "
+                    f"filtering. The context layer is INACTIVE for this corpus — "
+                    f"answers will not be narrowed to the vessel. Ship "
+                    f"{spec.code_id}_applicability.json alongside the index. ***"
+                )
+            else:
+                print(
+                    f"[corpus] {spec.short_name}: loaded, filtering active "
+                    f"(fingerprint {self.fingerprints[spec.code_id]})"
+                )
 
         if not self.retrievers:
             raise RuntimeError(
@@ -112,6 +122,13 @@ class CorpusRegistry:
                 "available": s.code_id in self.retrievers,
                 "reason": self.unavailable.get(s.code_id),
                 "fingerprint": self.fingerprints.get(s.code_id),
+                # Surfaced so a deploy missing its sidecar is visible rather
+                # than silently degrading to unfiltered retrieval.
+                "filtering_active": (
+                    self.retrievers[s.code_id].applicability is not None
+                    if s.code_id in self.retrievers
+                    else False
+                ),
             }
             for s in self.specs.values()
         ]
