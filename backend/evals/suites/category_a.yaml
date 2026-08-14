@@ -1,0 +1,114 @@
+# Category A — must answer confidently with a correct clause citation.
+# From Dave's baseline plan.
+#
+# NOTE ON SCORING: accepted_citations is EMPTY on every case below. Until a
+# domain reviewer fills them in, the runner can only check that a confident,
+# cited answer came back — it cannot check the clause is the RIGHT one, and it
+# marks every such case NEEDS REVIEWER in the report.
+#
+# Section G of the baseline plan flags exactly this: if Dave cannot verify these
+# himself, a paid maritime reviewer is needed, and that cost lands now rather
+# than at Seed. Do not report a Category A pass rate externally until these are
+# filled in — a pass here currently means "answered", not "answered correctly".
+category: A
+
+_default_vessel: &default_vessel
+  vessel_type: workboat
+  length_overall: 11.0
+  area_category: 2
+  hull_material: GRP
+  passenger_count: 8
+
+cases:
+  - id: A01
+    question: Do I need a kill cord on my rigid inflatable boat?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A02
+    question: How many liferafts do I need for 20 passengers in area category 1?
+    vessel:
+      vessel_type: workboat
+      length_overall: 16.0
+      area_category: 1
+      hull_material: GRP
+      passenger_count: 20
+    accepted_citations: []
+  - id: A03
+    question: Can I operate my vessel single-handed?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A04
+    question: What fire-fighting equipment is required on a 15m charter vessel?
+    vessel:
+      vessel_type: workboat
+      length_overall: 15.0
+      area_category: 2
+      hull_material: GRP
+      passenger_count: 12
+    accepted_citations: []
+  - id: A05
+    question: Do I need a VHF radio on board for coastal operations?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A06
+    question: How often does my vessel need to be surveyed for certification renewal?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A07
+    question: What lifejacket standards apply to children under 32kg?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A08
+    question: Do inflatable lifejackets need extra equipment compared to standard ones?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A09
+    question: What navigation lights are required for a vessel operating at night?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A10
+    question: Is a bilge pump mandatory on vessels over 12 metres?
+    vessel:
+      vessel_type: workboat
+      length_overall: 13.0
+      area_category: 2
+      hull_material: GRP
+      passenger_count: 8
+    accepted_citations: []
+  - id: A11
+    question: What are the area category definitions and how do they affect equipment requirements?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A12
+    question: Do I need an EPIRB for area category 2 operations?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A13
+    question: What documentation must be carried on board at all times?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A14
+    question: Is a first aid kit mandatory, and what should it contain?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A15
+    question: Do I need a fire extinguisher near my cooking appliance?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A16
+    question: What are the requirements for anchors and chain cables on small vessels?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A17
+    question: Do I need a stability book on board, and when is it required?
+    vessel: *default_vessel
+    accepted_citations: []
+  - id: A18
+    question: What are the manning requirements for vessels over 24 metres?
+    vessel:
+      vessel_type: workboat
+      length_overall: 26.0
+      area_category: 1
+      hull_material: Steel
+      passenger_count: 12
+    accepted_citations: []

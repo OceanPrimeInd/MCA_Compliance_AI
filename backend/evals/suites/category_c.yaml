@@ -1,0 +1,35 @@
+# Category C — sounds in scope, but is NOT in the ingested Code.
+# Dave's plan calls this "the real product moat" and requires 15 items before
+# any paid launch. Each must be refused with a pointer to where it actually sits.
+category: C
+cases:
+  - id: C01
+    question: What's the penalty if I get caught without a valid certificate?
+  - id: C02
+    question: How much does an MCA survey typically cost?
+  - id: C03
+    question: What scantlings does ISO 12215 require for my hull thickness?
+  - id: C04
+    question: What does ISO 12217 say about my stability category assessment?
+  - id: C05
+    question: How long does a Certifying Authority take to issue my certificate?
+  - id: C06
+    question: Can my Certifying Authority grant an exemption at their discretion?
+  - id: C07
+    question: What is the fine for operating outside my certificated area category?
+  - id: C08
+    question: Which Certifying Authority is cheapest for a small workboat?
+  - id: C09
+    question: What happens legally if my vessel fails its renewal examination?
+  - id: C10
+    question: How do I appeal an MCA detention notice?
+  - id: C11
+    question: What insurance limits does the Merchant Shipping Act require of me?
+  - id: C12
+    question: What is the statutory limitation period for a maritime claim?
+  - id: C13
+    question: Do I need an operator licence from my local port authority?
+  - id: C14
+    question: What VAT treatment applies to a commercially coded vessel?
+  - id: C15
+    question: What is the MCA's current backlog for certificate applications?

@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Link, useRoute } from "../lib/router";
 
 const LINKS = [
-  { to: "/solution", label: "Solution" },
-  { to: "/documents", label: "What You'll Need" },
+  { to: "/solution", label: "How it works" },
+  { to: "/documents", label: "Codes covered" },
+  { to: "/demo", label: "Live demo" },
   { to: "/pricing", label: "Pricing" },
   { to: "/faq", label: "FAQ" },
 ];
@@ -16,7 +17,7 @@ export default function Nav() {
     <header className="mkt-nav">
       <div className="mkt-nav-inner">
         <Link to="/" className="mkt-logo">
-          <span className="mkt-logo-mark">⚓</span> Compliance AI
+          <span className="mkt-logo-mark">⚓</span> OceanGRC
         </Link>
 
         <nav className={`mkt-nav-links ${open ? "open" : ""}`}>
@@ -31,7 +32,7 @@ export default function Nav() {
             </Link>
           ))}
           <Link to="/app" className="mkt-btn mkt-btn-primary mkt-nav-cta" onClick={() => setOpen(false)}>
-            Try it free
+            Start free
           </Link>
         </nav>
 

@@ -1,0 +1,144 @@
+# Category D — applicability discrimination.
+#
+# Each case asks ONE question against TWO vessels placed on opposite sides of a
+# statutory threshold the Code actually uses (12m, 15m, 24m for length; the
+# Category 0-1 vs 2-6 split for operating area; the 12-passenger line).
+#
+# Two things are checked, both mechanically:
+#   1. LEAKAGE — neither answer may cite a clause the filter excluded for that
+#      vessel. Must be zero.
+#   2. DISCRIMINATION — the two vessels must receive materially different clause
+#      sets. Identical sets mean the context layer did nothing.
+#
+# Neither check needs a maritime lawyer, which is why this suite can be run and
+# trusted today while A and C still await a domain reviewer.
+category: D
+
+_vessels: &small
+  vessel_type: workboat
+  length_overall: 11.0
+  area_category: 2
+  hull_material: GRP
+  passenger_count: 8
+
+_vessels_large: &large
+  vessel_type: workboat
+  length_overall: 18.5
+  area_category: 0
+  hull_material: Aluminium
+  passenger_count: 30
+
+cases:
+  - id: D01
+    question: What watertight subdivision or collision bulkhead is required?
+    vessel_a: *small
+    vessel_b: *large
+
+  - id: D02
+    question: How many liferafts must be carried?
+    vessel_a: *small
+    vessel_b: *large
+
+  - id: D03
+    question: What bilge pumping arrangements are required?
+    vessel_a: *small
+    vessel_b: *large
+
+  - id: D04
+    question: What radio equipment must be fitted?
+    vessel_a: *small
+    vessel_b: *large
+
+  - id: D05
+    question: What are the freeboard and weathertight integrity requirements?
+    vessel_a: *small
+    vessel_b: *large
+
+  - id: D06
+    question: What fire-fighting appliances are required on board?
+    vessel_a: *small
+    vessel_b: *large
+
+  # Length held constant, area category varied — isolates category filtering.
+  - id: D07
+    question: What navigation lights and shapes are required?
+    vessel_a:
+      vessel_type: workboat
+      length_overall: 14.0
+      area_category: 6
+      hull_material: GRP
+      passenger_count: 6
+    vessel_b:
+      vessel_type: workboat
+      length_overall: 14.0
+      area_category: 0
+      hull_material: GRP
+      passenger_count: 6
+
+  - id: D08
+    question: What life-saving signals and distress equipment must be carried?
+    vessel_a:
+      vessel_type: workboat
+      length_overall: 14.0
+      area_category: 5
+      hull_material: GRP
+      passenger_count: 6
+    vessel_b:
+      vessel_type: workboat
+      length_overall: 14.0
+      area_category: 1
+      hull_material: GRP
+      passenger_count: 6
+
+  # Straddles the 12m threshold, which the Code uses explicitly.
+  - id: D09
+    question: What are the requirements for guard rails and bulwarks?
+    vessel_a:
+      vessel_type: workboat
+      length_overall: 11.5
+      area_category: 3
+      hull_material: GRP
+      passenger_count: 4
+    vessel_b:
+      vessel_type: workboat
+      length_overall: 13.0
+      area_category: 3
+      hull_material: GRP
+      passenger_count: 4
+
+  # Straddles the 15m threshold used by clause 5.6.3.1 among others.
+  - id: D10
+    question: What structural fire protection is required?
+    vessel_a:
+      vessel_type: workboat
+      length_overall: 14.5
+      area_category: 1
+      hull_material: Steel
+      passenger_count: 10
+    vessel_b:
+      vessel_type: workboat
+      length_overall: 16.0
+      area_category: 1
+      hull_material: Steel
+      passenger_count: 10
+
+  # Straddles the 12-passenger line.
+  - id: D11
+    question: What additional requirements apply because of the number of passengers carried?
+    vessel_a:
+      vessel_type: workboat
+      length_overall: 16.0
+      area_category: 2
+      hull_material: Aluminium
+      passenger_count: 10
+    vessel_b:
+      vessel_type: workboat
+      length_overall: 16.0
+      area_category: 2
+      hull_material: Aluminium
+      passenger_count: 30
+
+  - id: D12
+    question: What stability information and criteria apply to this vessel?
+    vessel_a: *small
+    vessel_b: *large

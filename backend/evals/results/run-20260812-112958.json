@@ -1,0 +1,125 @@
+{
+  "summary": {
+    "by_category": {
+      "D": {
+        "total": 12,
+        "passed": 0
+      }
+    },
+    "total": 12,
+    "passed": 0,
+    "leakage_incidents": 0,
+    "leakage_rate": 0.0,
+    "discrimination_rate": 0.0
+  },
+  "results": [
+    {
+      "id": "D01",
+      "category": "D",
+      "question": "What watertight subdivision or collision bulkhead is required?",
+      "passed": false,
+      "detail": "ERROR ClientError: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/migrate-to-interactions).', 'status': 'NOT_FOUND'}}",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D02",
+      "category": "D",
+      "question": "How many liferafts must be carried?",
+      "passed": false,
+      "detail": "ERROR ClientError: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/migrate-to-interactions).', 'status': 'NOT_FOUND'}}",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D03",
+      "category": "D",
+      "question": "What bilge pumping arrangements are required?",
+      "passed": false,
+      "detail": "ERROR ClientError: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/migrate-to-interactions).', 'status': 'NOT_FOUND'}}",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D04",
+      "category": "D",
+      "question": "What radio equipment must be fitted?",
+      "passed": false,
+      "detail": "ERROR ClientError: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/migrate-to-interactions).', 'status': 'NOT_FOUND'}}",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D05",
+      "category": "D",
+      "question": "What are the freeboard and weathertight integrity requirements?",
+      "passed": false,
+      "detail": "ERROR ClientError: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/migrate-to-interactions).', 'status': 'NOT_FOUND'}}",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D06",
+      "category": "D",
+      "question": "What fire-fighting appliances are required on board?",
+      "passed": false,
+      "detail": "ERROR ClientError: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/migrate-to-interactions).', 'status': 'NOT_FOUND'}}",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D07",
+      "category": "D",
+      "question": "What navigation lights and shapes are required?",
+      "passed": false,
+      "detail": "ERROR ClientError: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/migrate-to-interactions).', 'status': 'NOT_FOUND'}}",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D08",
+      "category": "D",
+      "question": "What life-saving signals and distress equipment must be carried?",
+      "passed": false,
+      "detail": "ERROR ClientError: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/migrate-to-interactions).', 'status': 'NOT_FOUND'}}",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D09",
+      "category": "D",
+      "question": "What are the requirements for guard rails and bulwarks?",
+      "passed": false,
+      "detail": "ERROR ClientError: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/migrate-to-interactions).', 'status': 'NOT_FOUND'}}",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D10",
+      "category": "D",
+      "question": "What structural fire protection is required?",
+      "passed": false,
+      "detail": "ERROR RuntimeError: Cohere API Error 429: {\"id\":\"40c92a5f-81f2-4b60-976a-5bd9c8d310c0\",\"message\":\"You are using a Trial key, which is limited to 40 API calls / minute. You can continue to use the Trial key for free or upgrade to a Production key with higher rate limits at 'https://dashboard.cohere.com/api-keys'. Contact us on 'https://discord.gg/XW44jPfYJu' or email us at support@cohere.com with any questions\"}",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D11",
+      "category": "D",
+      "question": "What additional requirements apply because of the number of passengers carried?",
+      "passed": false,
+      "detail": "ERROR RuntimeError: Cohere API Error 429: {\"id\":\"6ca4eca2-dc06-4288-840b-5e831879835b\",\"message\":\"You are using a Trial key, which is limited to 40 API calls / minute. You can continue to use the Trial key for free or upgrade to a Production key with higher rate limits at 'https://dashboard.cohere.com/api-keys'. Contact us on 'https://discord.gg/XW44jPfYJu' or email us at support@cohere.com with any questions\"}",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D12",
+      "category": "D",
+      "question": "What stability information and criteria apply to this vessel?",
+      "passed": false,
+      "detail": "ERROR RuntimeError: Cohere API Error 429: {\"id\":\"5d8d1862-633c-4fb7-8309-d5edddfb6a8f\",\"message\":\"You are using a Trial key, which is limited to 40 API calls / minute. You can continue to use the Trial key for free or upgrade to a Production key with higher rate limits at 'https://dashboard.cohere.com/api-keys'. Contact us on 'https://discord.gg/XW44jPfYJu' or email us at support@cohere.com with any questions\"}",
+      "leaked": [],
+      "elapsed": 0
+    }
+  ]
+}

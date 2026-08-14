@@ -1,0 +1,125 @@
+{
+  "summary": {
+    "by_category": {
+      "D": {
+        "total": 12,
+        "passed": 0
+      }
+    },
+    "total": 12,
+    "passed": 0,
+    "leakage_incidents": 0,
+    "leakage_rate": 0.0,
+    "discrimination_rate": 0.0
+  },
+  "results": [
+    {
+      "id": "D01",
+      "category": "D",
+      "question": "What watertight subdivision or collision bulkhead is required?",
+      "passed": false,
+      "detail": "ERROR OperationalError: no such column: scope_key",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D02",
+      "category": "D",
+      "question": "How many liferafts must be carried?",
+      "passed": false,
+      "detail": "ERROR OperationalError: no such column: scope_key",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D03",
+      "category": "D",
+      "question": "What bilge pumping arrangements are required?",
+      "passed": false,
+      "detail": "ERROR OperationalError: no such column: scope_key",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D04",
+      "category": "D",
+      "question": "What radio equipment must be fitted?",
+      "passed": false,
+      "detail": "ERROR OperationalError: no such column: scope_key",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D05",
+      "category": "D",
+      "question": "What are the freeboard and weathertight integrity requirements?",
+      "passed": false,
+      "detail": "ERROR OperationalError: no such column: scope_key",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D06",
+      "category": "D",
+      "question": "What fire-fighting appliances are required on board?",
+      "passed": false,
+      "detail": "ERROR OperationalError: no such column: scope_key",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D07",
+      "category": "D",
+      "question": "What navigation lights and shapes are required?",
+      "passed": false,
+      "detail": "ERROR OperationalError: no such column: scope_key",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D08",
+      "category": "D",
+      "question": "What life-saving signals and distress equipment must be carried?",
+      "passed": false,
+      "detail": "ERROR OperationalError: no such column: scope_key",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D09",
+      "category": "D",
+      "question": "What are the requirements for guard rails and bulwarks?",
+      "passed": false,
+      "detail": "ERROR OperationalError: no such column: scope_key",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D10",
+      "category": "D",
+      "question": "What structural fire protection is required?",
+      "passed": false,
+      "detail": "ERROR OperationalError: no such column: scope_key",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D11",
+      "category": "D",
+      "question": "What additional requirements apply because of the number of passengers carried?",
+      "passed": false,
+      "detail": "ERROR OperationalError: no such column: scope_key",
+      "leaked": [],
+      "elapsed": 0
+    },
+    {
+      "id": "D12",
+      "category": "D",
+      "question": "What stability information and criteria apply to this vessel?",
+      "passed": false,
+      "detail": "ERROR OperationalError: no such column: scope_key",
+      "leaked": [],
+      "elapsed": 0
+    }
+  ]
+}

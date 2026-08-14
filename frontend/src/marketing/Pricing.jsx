@@ -5,57 +5,57 @@ const TIERS = [
     name: "Free",
     price: "£0",
     period: "",
-    tagline: "Try it before you rely on it.",
-    cta: "Try it free",
+    tagline: "Satisfy yourself the answers are trustworthy.",
+    cta: "Start free",
     features: [
-      "20 questions / month",
-      "Full clause citations",
-      "Confidence scoring",
-      "1 user, conversation history",
-      "Community support",
+      "15 questions, one-off",
+      "Both codes, full applicability filtering",
+      "Verbatim clause text with page reference",
+      "1 vessel profile",
+      "No card required",
     ],
   },
   {
-    name: "Starter",
-    price: "£29",
-    period: "/ month",
-    tagline: "For skippers, small operators & training providers.",
-    cta: "Start Starter",
+    name: "Practitioner",
+    price: "£240",
+    period: "/ year",
+    tagline: "Sole practitioner or one-person design consultancy.",
+    cta: "Start Practitioner",
     highlight: true,
     features: [
-      "Unlimited questions",
-      "Full clause citations",
-      "Confidence scoring",
-      "1 seat, full conversation history",
+      "400 questions / month",
+      "Cross-code comparison",
+      "Copy as design note",
+      "Unlimited vessel profiles",
       "Email support",
     ],
   },
   {
-    name: "Professional",
-    price: "£89",
-    period: "/ seat / month",
-    tagline: "For surveyors, Certifying Authorities & brokers.",
-    cta: "Start Professional",
+    name: "Practice",
+    price: "£600",
+    period: "/ year",
+    tagline: "Small design practice, two to three architects.",
+    cta: "Start Practice",
     features: [
-      "Everything in Starter",
-      "Up to 10 team seats",
-      "Export & audit trail",
-      "Usage analytics",
-      "Priority support",
+      "1,500 questions / month",
+      "3 seats",
+      "Shared vessel profiles",
+      "Better value per question",
+      "Priority email support",
     ],
   },
   {
-    name: "Enterprise",
-    price: "Custom",
-    period: "",
-    tagline: "For fleets, MCA-approved bodies & training organisations.",
+    name: "Consultancy",
+    price: "£1,800",
+    period: "/ year",
+    tagline: "Multi-seat consultancy, Certifying Authority or builder.",
     cta: "Talk to us",
     features: [
-      "Everything in Professional",
-      "SSO",
-      "Custom document ingestion",
-      "Uptime SLA",
-      "Dedicated support",
+      "6,000 questions / month",
+      "10 seats",
+      "Export and audit trail",
+      "Best value per question",
+      "Onboarding session",
     ],
   },
 ];
@@ -65,39 +65,38 @@ export default function Pricing() {
     <>
       <section className="mkt-hero mkt-hero-sm">
         <div className="mkt-hero-inner">
-          <div className="mkt-eyebrow">Pricing — draft for review</div>
-          <h1 className="mkt-h1">Simple plans, priced to match how you use it</h1>
+          <div className="mkt-eyebrow">Pricing</div>
+          <h1 className="mkt-h1">Priced as a professional reference, not a fleet system.</h1>
           <p className="mkt-hero-sub">
-            No card required for Free. Cancel anytime on paid plans.
+            One person can expense a Practitioner seat without an approval process. Every tier
+            includes the full applicability filter and both codes — higher tiers buy volume and
+            seats, never better answers.
           </p>
         </div>
       </section>
 
-      <div className="mkt-section-inner mkt-draft-banner">
-        <strong>Draft pricing.</strong> Figures below are placeholders for internal review — confirm
-        before publishing externally.
-      </div>
-
-      <section className="mkt-section mkt-pricing-section">
+      <section className="mkt-section">
         <div className="mkt-section-inner">
-          <div className="mkt-grid mkt-grid-4 mkt-pricing-grid">
+          <div className="mkt-grid mkt-grid-4">
             {TIERS.map((t) => (
-              <div className={`mkt-price-card ${t.highlight ? "mkt-price-highlight" : ""}`} key={t.name}>
-                {t.highlight && <div className="mkt-price-badge">Most popular</div>}
-                <div className="mkt-price-name">{t.name}</div>
-                <div className="mkt-price-tagline">{t.tagline}</div>
-                <div className="mkt-price-amount">
-                  {t.price}
+              <div
+                className={`mkt-card mkt-price-card${t.highlight ? " mkt-price-card-highlight" : ""}`}
+                key={t.name}
+              >
+                <div className="mkt-card-title">{t.name}</div>
+                <div className="mkt-price">
+                  <span className="mkt-price-num">{t.price}</span>
                   <span className="mkt-price-period">{t.period}</span>
                 </div>
-                <ul className="mkt-price-features">
-                  {t.features.map((f, i) => (
-                    <li key={i}>{f}</li>
+                <div className="mkt-card-body">{t.tagline}</div>
+                <ul className="mkt-check-list">
+                  {t.features.map((f) => (
+                    <li key={f}>{f}</li>
                   ))}
                 </ul>
                 <Link
                   to="/app"
-                  className={`mkt-btn ${t.highlight ? "mkt-btn-primary" : "mkt-btn-ghost"} mkt-price-cta`}
+                  className={`mkt-btn ${t.highlight ? "mkt-btn-primary" : "mkt-btn-ghost"}`}
                 >
                   {t.cta}
                 </Link>
@@ -109,29 +108,25 @@ export default function Pricing() {
 
       <section className="mkt-section mkt-section-alt">
         <div className="mkt-section-inner">
-          <div className="mkt-section-head">
-            <div className="mkt-eyebrow">Billing</div>
-            <h2 className="mkt-h2">A few things worth knowing</h2>
-          </div>
-          <div className="mkt-grid mkt-grid-2">
-            <div className="mkt-card mkt-card-plain">
-              <div className="mkt-card-title">No lock-in</div>
-              <div className="mkt-card-body">Monthly billing on Starter and Professional — upgrade, downgrade, or cancel any time.</div>
-            </div>
-            <div className="mkt-card mkt-card-plain">
-              <div className="mkt-card-title">Enterprise is custom</div>
-              <div className="mkt-card-body">Seats, SLA, and custom document ingestion are scoped per organisation — talk to us for a quote.</div>
-            </div>
+          <div className="mkt-note">
+            <strong>How the allowance works:</strong> allowances are metered in tokens and shown to
+            you as questions. When you reach the limit the tool stops and offers a top-up — it never
+            quietly shortens answers or degrades quality. A compliance tool that gets worse without
+            telling you is more dangerous than one that stops.
           </div>
         </div>
       </section>
 
       <section className="mkt-cta-banner">
         <div className="mkt-cta-inner">
-          <h2 className="mkt-h2">Start on Free, upgrade when you need to.</h2>
+          <h2 className="mkt-h2">Try fifteen questions before you decide.</h2>
+          <p className="mkt-cta-sub">
+            Ask things you already know the answer to, and check the citations against the Code
+            yourself. That is the only sensible way to evaluate this.
+          </p>
           <div className="mkt-hero-cta">
             <Link to="/app" className="mkt-btn mkt-btn-primary mkt-btn-lg">
-              Try it free
+              Start free
             </Link>
             <Link to="/faq" className="mkt-btn mkt-btn-ghost-invert mkt-btn-lg">
               Read the FAQ

@@ -1,8 +1,9 @@
 import json
-import os
 import numpy as np
 import requests
 import time
+
+from core.env import require
 
 def build_index(chunks_path: str, output_path: str):
     chunks = json.load(open(chunks_path))
@@ -14,7 +15,7 @@ def build_index(chunks_path: str, output_path: str):
 
     api_url = "https://api.cohere.com/v2/embed"
     headers = {
-        "Authorization": f"Bearer {os.environ['COHERE_API_KEY']}",
+        "Authorization": f"Bearer {require('COHERE_API_KEY')}",
         "Content-Type": "application/json"
     }
 
@@ -60,7 +61,16 @@ def build_index(chunks_path: str, output_path: str):
     print(f"Done. Index successfully updated at {output_path}")
 
 if __name__ == "__main__":
-    build_index(
-        chunks_path="data/processed/spvc_2025_chunks.json",
-        output_path="data/processed/spvc_2025_index.npz",
+    import argparse
+
+    ap = argparse.ArgumentParser(description="Embed a corpus and write its index.")
+    ap.add_argument("--chunks", default="data/processed/spvc_2025_chunks.json")
+    ap.add_argument(
+        "--out",
+        default=None,
+        help="index path; defaults to <chunks>_index.npz alongside the input",
     )
+    args = ap.parse_args()
+
+    out = args.out or args.chunks.replace("_chunks.json", "_index.npz")
+    build_index(chunks_path=args.chunks, output_path=out)

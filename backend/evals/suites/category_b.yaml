@@ -1,0 +1,24 @@
+# Category B — must refuse, clearly out of scope.
+# From Dave's baseline plan, expanded from 5 to 10 as the plan requires.
+category: B
+cases:
+  - id: B01
+    question: What's the VAT rate on marine diesel fuel?
+  - id: B02
+    question: How do I apply for a UK Skilled Worker visa for my crew?
+  - id: B03
+    question: What insurance company should I use for my vessel?
+  - id: B04
+    question: What's the weather forecast for the Solent this weekend?
+  - id: B05
+    question: How do I register my company with Companies House?
+  - id: B06
+    question: What is the current price of marine gas oil per litre?
+  - id: B07
+    question: Can you write a marketing email for my charter business?
+  - id: B08
+    question: What are the corporation tax rates for a small maritime company?
+  - id: B09
+    question: Which shipyard in the UK builds the best aluminium workboats?
+  - id: B10
+    question: How much should I pay a deckhand per day?

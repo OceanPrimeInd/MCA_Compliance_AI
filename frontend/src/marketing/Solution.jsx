@@ -2,39 +2,39 @@ import { Link } from "../lib/router";
 
 const OLD_VS_NEW = [
   {
-    old: "Ctrl+F through a 100+ page PDF and hope you picked the right keyword.",
-    new: "Ask the question in plain English and get pointed straight at the relevant clause.",
+    old: "You get the clause text and work out yourself whether it binds your vessel.",
+    new: "Clauses that cannot bind your vessel are removed before the answer is written.",
   },
   {
-    old: "Rely on whoever on the team happens to remember that clause.",
-    new: "Every question gets the same, source-grounded answer — every time.",
+    old: "You restate the length and area category in every question, and hope you remembered.",
+    new: "The vessel is held once and applied to every question automatically.",
   },
   {
-    old: "No easy way to double-check a colleague's read of the Code.",
-    new: "Every answer ships with its citation and a confidence score, so it's auditable on the spot.",
+    old: "One code per tool. Comparing regimes means reading both documents side by side.",
+    new: "One question across SPVC 2025 and Workboat Code Edition 3, answered as a difference.",
   },
   {
-    old: "Get it wrong quietly, find out later.",
-    new: "Weak matches are flagged as unverified before you ever act on them.",
+    old: "A confident answer whether or not the source exists.",
+    new: "An explicit refusal that names where the answer actually sits.",
   },
 ];
 
 const BENEFITS = [
   {
-    title: "Speed",
-    body: "Turn a 10-minute manual lookup into a question typed in plain English and a cited answer back in seconds.",
+    title: "Applicability, not search",
+    body: "Requirements carry machine-readable scope — length bounds, area categories, passenger thresholds — parsed from the Code's own wording and inherited down the clause hierarchy.",
   },
   {
-    title: "Consistency",
-    body: "Every answer is grounded in the same indexed Code, so the answer doesn't change depending on who asks or who's answering.",
+    title: "Defensible on paper",
+    body: "Verbatim clause text with number and page, so what you file is the Code's language rather than a paraphrase of it.",
   },
   {
-    title: "Auditability",
-    body: "Every response carries the clause number, page, relevance score, and a verified/unverified flag — so you can show your working.",
+    title: "Cross-code by design",
+    body: "Retrieval sets are kept separate per code, so a difference claim is grounded in both documents rather than blended into one answer.",
   },
   {
-    title: "Lower risk",
-    body: "Low-confidence matches are surfaced explicitly instead of being presented with false confidence.",
+    title: "Conservative by construction",
+    body: "A clause is excluded only on an explicit, parsed conflict. Anything ambiguous is kept — hiding a binding clause is the one failure that cannot be recovered from.",
   },
 ];
 
@@ -43,13 +43,12 @@ export default function Solution() {
     <>
       <section className="mkt-hero mkt-hero-sm">
         <div className="mkt-hero-inner">
-          <div className="mkt-eyebrow">Why we built it</div>
-          <h1 className="mkt-h1">The Code is long. Getting it wrong isn't an option.</h1>
+          <div className="mkt-eyebrow">How it works</div>
+          <h1 className="mkt-h1">A librarian finds the page. A colleague knows your boat.</h1>
           <p className="mkt-hero-sub">
-            The Sport or Pleasure Vessel Code 2025 covers construction, stability, machinery, fire
-            safety, radio, and manning — hundreds of clauses deep. Finding the right one by hand is
-            slow, and a wrong read has real safety and compliance consequences. Compliance AI turns
-            that lookup into a single question.
+            Ask a general compliance tool how often you need fire drills and it reads you the clause.
+            Correct, and incomplete — you still have to establish whether that clause binds an 11.8m
+            Category 2 vessel carrying eight passengers. OceanGRC answers that part first.
           </p>
         </div>
       </section>
@@ -58,11 +57,11 @@ export default function Solution() {
         <div className="mkt-section-inner">
           <div className="mkt-section-head">
             <div className="mkt-eyebrow">Before / after</div>
-            <h2 className="mkt-h2">The old way vs. Compliance AI</h2>
+            <h2 className="mkt-h2">Regulatory search vs. applicability</h2>
           </div>
           <div className="mkt-compare">
             <div className="mkt-compare-col mkt-compare-old">
-              <div className="mkt-compare-heading">Without Compliance AI</div>
+              <div className="mkt-compare-heading">A search tool over the Code</div>
               {OLD_VS_NEW.map((r, i) => (
                 <div className="mkt-compare-row" key={`old-${i}`}>
                   {r.old}
@@ -70,7 +69,7 @@ export default function Solution() {
               ))}
             </div>
             <div className="mkt-compare-col mkt-compare-new">
-              <div className="mkt-compare-heading">With Compliance AI</div>
+              <div className="mkt-compare-heading">OceanGRC</div>
               {OLD_VS_NEW.map((r, i) => (
                 <div className="mkt-compare-row" key={`new-${i}`}>
                   {r.new}
@@ -85,37 +84,41 @@ export default function Solution() {
         <div className="mkt-section-inner">
           <div className="mkt-section-head">
             <div className="mkt-eyebrow">Under the hood</div>
-            <h2 className="mkt-h2">Grounded in the Code — not a general-purpose chatbot</h2>
+            <h2 className="mkt-h2">Where the intelligence actually lives</h2>
           </div>
           <div className="mkt-flow">
             <div className="mkt-flow-step">
-              <div className="mkt-flow-title">1. Parsed &amp; chunked</div>
+              <div className="mkt-flow-title">1. Parsed clause by clause</div>
               <div className="mkt-flow-body">
-                The Sport or Pleasure Vessel Code 2025 is parsed clause by clause and split into
-                indexed chunks, each tagged with its clause number and page.
+                Each code is split into clause-level chunks carrying its clause number, section and
+                page. Contents pages and parser artefacts are removed so they can never be retrieved
+                as if they were statutory content.
               </div>
             </div>
             <div className="mkt-flow-step">
-              <div className="mkt-flow-title">2. Retrieved</div>
+              <div className="mkt-flow-title">2. Scope conditions extracted</div>
               <div className="mkt-flow-body">
-                When you ask a question, the system searches that index for the clauses most
-                relevant to what you actually asked — this is retrieval-augmented generation (RAG),
-                not free-form guessing.
+                Phrases like "vessels of less than 12 metres" and "area category of operation 0 or 1"
+                are parsed into structured bounds and inherited from parent clauses to children —
+                deterministically, so every exclusion is reproducible and auditable rather than a
+                model's opinion.
               </div>
             </div>
             <div className="mkt-flow-step">
-              <div className="mkt-flow-title">3. Answered &amp; scored</div>
+              <div className="mkt-flow-title">3. Filtered before generation</div>
               <div className="mkt-flow-body">
-                The answer is generated only from the retrieved clauses, then scored for relevance.
-                Scores of 0.6+ show green, 0.45–0.6 show amber, and below 0.45 show red with an
-                explicit "weak match" warning.
+                Retrieval scores the whole corpus, then removes clauses that conflict with your
+                vessel, then takes the top results. Out-of-scope clauses never occupy a slot, so the
+                model is never in a position to cite one.
               </div>
             </div>
             <div className="mkt-flow-step">
-              <div className="mkt-flow-title">4. Verified &amp; saved</div>
+              <div className="mkt-flow-title">4. Answered, cited, checked</div>
               <div className="mkt-flow-body">
-                Citations are checked against the source text and marked verified or unverified.
-                Your conversation is saved securely to your account so you can find it again.
+                The answer is written only from the surviving clauses, in a fixed three-part format:
+                verdict, statutory anchor, verbatim extract. Every citation is verified against what
+                was actually retrieved. Where a table's structure was lost in extraction, the answer
+                says so instead of inferring the value.
               </div>
             </div>
           </div>
@@ -125,8 +128,8 @@ export default function Solution() {
       <section className="mkt-section">
         <div className="mkt-section-inner">
           <div className="mkt-section-head">
-            <div className="mkt-eyebrow">Why teams choose it</div>
-            <h2 className="mkt-h2">Built to be checked, not just trusted blindly</h2>
+            <div className="mkt-eyebrow">Design principles</div>
+            <h2 className="mkt-h2">Built to be checked, not trusted blindly</h2>
           </div>
           <div className="mkt-grid mkt-grid-4">
             {BENEFITS.map((b) => (
@@ -141,13 +144,13 @@ export default function Solution() {
 
       <section className="mkt-cta-banner">
         <div className="mkt-cta-inner">
-          <h2 className="mkt-h2">See it answer your first question.</h2>
+          <h2 className="mkt-h2">Set a vessel and see the answer change.</h2>
           <div className="mkt-hero-cta">
             <Link to="/app" className="mkt-btn mkt-btn-primary mkt-btn-lg">
-              Try it free
+              Start free
             </Link>
             <Link to="/documents" className="mkt-btn mkt-btn-ghost-invert mkt-btn-lg">
-              What you'll need
+              Codes covered
             </Link>
           </div>
         </div>
